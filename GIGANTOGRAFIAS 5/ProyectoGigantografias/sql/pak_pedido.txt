@@ -1,0 +1,126 @@
+CREATE OR REPLACE PACKAGE pack_pedido AS TYPE pedidoREF IS REF CURSOR;
+	PROCEDURE ingreso(
+						p_id_pedido IN VARCHAR, 
+						p_tipo IN VARCHAR,
+                        p_costo IN NUMERIC,
+                        p_descripcion IN CHAR,
+                        p_estado IN CHAR,
+                        p_fecha_ingreso IN DATE,
+					    p_fecha_entrega IN DATE
+					   );
+	PROCEDURE buscar_id(
+						p_id_pedido IN VARCHAR, 
+						resultado IN OUT pedidoREF
+					   );
+					   
+	PROCEDURE buscar(
+				
+				p_id_pedido IN VARCHAR2,
+				resultado IN OUT pedidoREF
+				);
+				
+	PROCEDURE mostrar(
+				resultado IN OUT pedidoREF
+				);
+				
+	PROCEDURE eliminar(
+				p_id_pedido IN VARCHAR2
+				);
+				
+	PROCEDURE modificar(
+						p_id_pedido IN VARCHAR2, 
+						 p_id_tipo_pedido IN VARCHAR2,
+                       p_costo IN NUMERIC,
+                       p_descripcion IN VARCHAR2,
+                       p_estado IN VARCHAR2,
+                       p_fecha_ingreso IN DATE,
+					   p_fecha_entrega IN DATE						
+					   
+				);
+				
+	PROCEDURE intervalo_fecha(
+						p_fecha_ingreso IN DATE,
+					   p_fecha_entrega IN DATE,
+						resultado IN OUT pedidoREF					   
+				);
+
+	
+END pack_pedido;
+
+--------------------------------------------------------------
+CREATE OR REPLACE PACKAGE BODY pack_pedido AS
+	PROCEDURE ingreso(
+						
+					   p_id_pedido IN VARCHAR, 
+					   p_tipo IN VARCHAR,
+                       p_costo IN NUMERIC,
+                       p_descripcion IN CHAR,
+                       p_estado IN CHAR,
+                       p_fecha_ingreso IN DATE,
+					   p_fecha_entrega IN DATE
+				)AS
+	  BEGIN
+		INSERT INTO pedido ( id_pedido , id_tipo_pedido ,costo , descripcion ,estado ,fecha_ingreso ,fecha_entrega )
+		VALUES(p_id_pedido ,  p_tipo , p_costo ,p_descripcion , p_estado , p_fecha_ingreso , p_fecha_entrega );
+	END ingreso;
+	
+	PROCEDURE buscar_id(
+						p_id_pedido IN VARCHAR, 
+						resultado IN OUT pedidoREF
+					   )AS
+		BEGIN
+			OPEN resultado FOR SELECT * FROM pedido WHERE id_pedido = p_id_pedido ;
+		END buscar_id ;
+		
+		PROCEDURE buscar(
+				
+				p_id_pedido IN VARCHAR2,
+				resultado IN OUT pedidoREF
+				)AS
+		BEGIN
+		OPEN resultado FOR SELECT * FROM pedido where id_pedido = p_id_pedido ;
+		END buscar ;
+		
+	PROCEDURE mostrar(
+				resultado IN OUT pedidoREF
+				)AS
+	  BEGIN
+		OPEN resultado FOR SELECT * FROM pedido;
+	END mostrar;
+	
+	PROCEDURE eliminar(
+				p_id_pedido IN VARCHAR2
+				)AS
+	  BEGIN
+		DELETE FROM pedido
+		WHERE id_pedido = p_id_pedido;
+	END eliminar;
+	
+	PROCEDURE modificar(
+						P_id_pedido IN VARCHAR2, 
+						 p_id_tipo_pedido IN VARCHAR2,
+                       p_costo IN NUMERIC,
+                       p_descripcion IN VARCHAR2,
+                       p_estado IN VARCHAR2,
+                       p_fecha_ingreso IN DATE,
+					   p_fecha_entrega IN DATE	
+						
+					   
+				)AS
+	  BEGIN
+		UPDATE pedido SET costo = p_costo ,descripcion =  p_descripcion, estado = p_estado , fecha_ingreso = p_fecha_ingreso, fecha_entrega = p_fecha_entrega,id_tipo_pedido=p_id_tipo_pedido
+		WHERE   id_pedido = p_id_pedido ;
+		COMMIT;
+	END modificar;
+	
+	PROCEDURE intervalo_fecha(
+						p_fecha_ingreso IN DATE,
+					   p_fecha_entrega IN DATE,
+						resultado IN OUT pedidoREF					   
+				)AS
+	  BEGIN
+		OPEN resultado FOR SELECT * FROM pedido WHERE fecha_ingreso > p_fecha_ingreso AND fecha_ingreso < p_fecha_entrega ;
+	END intervalo_fecha;
+	
+
+END pack_pedido;

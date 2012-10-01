@@ -1,0 +1,42 @@
+CREATE OR REPLACE PACKAGE pack_empresa AS TYPE empresaREF IS REF CURSOR;
+	PROCEDURE ingreso(
+				em_id_empresa IN NUMERIC, 
+	                       em_nombre IN VARCHAR2,
+        	               em_ubicacion IN VARCHAR2,
+        	               em_ruc IN VARCHAR2,
+        	               em_telefono IN VARCHAR2,
+        	               em_año IN int,
+        	               em_mision IN VARCHAR2,
+        	               em_tipo IN VARCHAR2
+				);
+	PROCEDURE mostrar(
+				resultado IN OUT empresaREF
+				);
+END pack_empresa;
+
+--------------------------------------------------------------
+CREATE OR REPLACE PACKAGE BODY pack_empresa AS
+	PROCEDURE ingreso(
+				em_id_empresa IN NUMERIC, 
+	                       em_nombre IN VARCHAR2,
+        	               em_ubicacion IN VARCHAR2,
+        	               em_ruc IN VARCHAR2,
+        	               em_telefono IN VARCHAR2,
+        	               em_año IN int,
+        	               em_mision IN VARCHAR2,
+        	               em_tipo IN VARCHAR2
+				)AS
+	  BEGIN
+		INSERT INTO empresa(id_empresa, nombre, ubicacion, ruc, telefono, año, mision, tipo)
+		VALUES(em_id_empresa, em_nombre, em_ubicacion, em_ruc, em_telefono, em_año, em_mision, em_tipo);
+	END ingreso;
+
+
+	PROCEDURE mostrar(
+				resultado IN OUT empresaREF
+				)AS
+	  BEGIN
+		OPEN resultado FOR SELECT * FROM empresa;
+	END mostrar;
+
+END pack_empresa;

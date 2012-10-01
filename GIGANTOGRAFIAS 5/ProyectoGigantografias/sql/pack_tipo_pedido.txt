@@ -1,0 +1,68 @@
+CREATE OR REPLACE PACKAGE pack_tipo_pedido AS TYPE tipo_pedidoREF IS REF CURSOR;
+	PROCEDURE ingreso(
+							t_id_tipo_pedido IN VARCHAR2,
+							t_nombre IN VARCHAR2,
+							t_costo IN NUMERIC,
+							t_descripcion IN VARCHAR2
+						
+					   );
+					   
+  
+				
+	
+	PROCEDURE mostrar(
+				resultado IN OUT tipo_pedidoREF
+				);
+				
+				
+	PROCEDURE buscar(
+				
+				t_id_tipo_pedido IN VARCHAR2,
+				resultado IN OUT tipo_pedidoREF
+				);
+	
+	
+END pack_tipo_pedido;
+
+--------------------------------------------------------------
+CREATE OR REPLACE PACKAGE BODY pack_tipo_pedido AS
+	PROCEDURE ingreso(
+							t_id_tipo_pedido IN VARCHAR2,
+							t_nombre IN VARCHAR2,
+							t_costo IN NUMERIC,
+							t_descripcion IN VARCHAR2
+						
+						
+				)AS
+	  BEGIN
+		INSERT INTO Tipo_pedido( id_tipo_pedido ,nombre ,costo ,descripcion  )
+		VALUES( t_id_tipo_pedido ,t_nombre ,t_costo ,t_descripcion );
+	END ingreso;
+	
+	
+
+	
+	
+	PROCEDURE mostrar(
+				resultado IN OUT tipo_pedidoREF
+				)AS
+	  BEGIN
+		OPEN resultado FOR SELECT * FROM Tipo_pedido;
+	END mostrar;
+	
+	PROCEDURE buscar(
+				
+				t_id_tipo_pedido IN VARCHAR2,
+				resultado IN OUT tipo_pedidoREF
+				)AS
+	  BEGIN
+		OPEN resultado FOR SELECT * FROM Tipo_pedido  WHERE id_tipo_pedido = t_id_tipo_pedido ;
+	END buscar;
+	
+	
+
+
+	
+	
+
+END pack_tipo_pedido;

@@ -1,0 +1,20 @@
+CREATE OR REPLACE PACKAGE pack_sustentacion AS TYPE sustentacionREF IS REF CURSOR;
+	
+	PROCEDURE mostrar(
+				resultado IN OUT clienteREF
+				);
+
+END pack_sustentacion;
+
+
+CREATE OR REPLACE PACKAGE BODY pack_sustentacion AS
+
+PROCEDURE mostrar(
+				resultado IN OUT clienteREF
+				)AS
+	  BEGIN
+		OPEN resultado FOR select c.nombre , COUNT(r.cedula_o_ruc) as np
+					from cliente c , registro_pedido r 
+					where c.cedula_o_ruc = r.cedula_o_ruc 
+	GROUP BY  c.nombre ;
+END mostrar;

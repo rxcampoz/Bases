@@ -1,0 +1,86 @@
+CREATE OR REPLACE PACKAGE pack_cliente AS TYPE clienteREF IS REF CURSOR;
+	PROCEDURE ingreso(
+						 
+						c_nombre IN VARCHAR2,
+                       c_apellido IN VARCHAR2,
+                       c_cedula_o_RUC IN VARCHAR2,
+                       c_telefono IN VARCHAR2);
+					   
+   PROCEDURE buscar(
+				
+				c_cedula_o_RUC IN VARCHAR2,
+				resultado IN OUT clienteREF
+				);
+				
+	PROCEDURE modificar(
+						 
+						c_nombre IN VARCHAR2,
+                       c_apellido IN VARCHAR2,
+                       c_cedula_o_RUC IN VARCHAR2,
+                       c_telefono IN VARCHAR2
+					   
+				);
+	PROCEDURE mostrar(
+				resultado IN OUT clienteREF
+				);
+				
+	PROCEDURE eliminar(
+				c_cedula IN VARCHAR2
+				);
+	
+END pack_cliente;
+
+--------------------------------------------------------------
+CREATE OR REPLACE PACKAGE BODY pack_cliente AS
+	PROCEDURE ingreso(
+						
+						c_nombre IN VARCHAR2,
+                       c_apellido IN VARCHAR2,
+                       c_cedula_o_RUC IN VARCHAR2,
+                       c_telefono IN VARCHAR2
+				)AS
+	  BEGIN
+		INSERT INTO cliente( nombre , apellido ,cedula_o_RUC ,telefono )
+		VALUES(c_nombre , c_apellido ,c_cedula_o_RUC , c_telefono );
+	END ingreso;
+	
+	PROCEDURE buscar(
+				
+				c_cedula_o_RUC IN VARCHAR2,
+				resultado IN OUT clienteREF
+				)AS
+	  BEGIN
+		OPEN resultado FOR SELECT * FROM cliente WHERE cedula_o_RUC = c_cedula_o_RUC ;
+	END buscar;
+
+	PROCEDURE modificar(
+						
+						c_nombre IN VARCHAR2,
+                       c_apellido IN VARCHAR2,
+                       c_cedula_o_RUC IN VARCHAR2,
+                       c_telefono IN VARCHAR2
+					   
+				)AS
+	  BEGIN
+		UPDATE cliente SET nombre = c_nombre, apellido = c_apellido, telefono = c_telefono
+		WHERE cedula_o_RUC = c_cedula_o_RUC ;
+		COMMIT;
+	END modificar;
+	
+	PROCEDURE mostrar(
+				resultado IN OUT clienteREF
+				)AS
+	  BEGIN
+		OPEN resultado FOR SELECT * FROM cliente;
+	END mostrar;
+	
+	PROCEDURE eliminar(
+				c_cedula IN VARCHAR2
+				)AS
+	  BEGIN
+		DELETE FROM cliente
+		WHERE cedula_o_RUC = c_cedula;
+	END eliminar;
+	
+
+END pack_cliente;

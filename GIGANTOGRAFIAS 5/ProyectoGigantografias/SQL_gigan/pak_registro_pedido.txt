@@ -1,0 +1,80 @@
+CREATE OR REPLACE PACKAGE pack_registro_pedido AS TYPE registro_pedidoREF IS REF CURSOR;
+	PROCEDURE ingreso(
+				rp_cedula_o_RUC IN  VARCHAR2,
+				rp_usuario IN VARCHAR2,
+				rp_id_pedido IN VARCHAR2		 
+			
+					   );
+   PROCEDURE buscar(
+				rp_cedula_o_RUC IN  VARCHAR2,
+				rp_usuario IN VARCHAR2,
+				rp_id_pedido IN VARCHAR2,
+				
+				resultado IN OUT registro_pedidoREF
+				);
+				
+	
+	
+				
+	PROCEDURE eliminar(
+				rp_id_pedido IN VARCHAR2,
+				rp_cedula_o_RUC IN  VARCHAR2,
+				rp_usuario IN VARCHAR2
+				
+				);
+
+	PROCEDURE mostrar(
+				resultado IN OUT empleadoREF);
+	
+	
+END pack_registro_pedido;
+
+--------------------------------------------------------------
+CREATE OR REPLACE PACKAGE BODY pack_registro_pedido AS
+	PROCEDURE ingreso(
+				rp_cedula_o_RUC IN  VARCHAR2,
+				rp_usuario IN VARCHAR2,
+				rp_id_pedido IN VARCHAR2	
+			
+				)AS
+	  BEGIN
+		INSERT INTO registro_pedido( cedula_o_RUC ,usuario  ,id_pedido )
+		VALUES( rp_cedula_o_RUC   ,rp_usuario ,rp_id_pedido  );
+	END ingreso;
+	
+	PROCEDURE buscar(
+				rp_cedula_o_RUC IN  VARCHAR2,
+				rp_usuario IN VARCHAR2,
+				rp_id_pedido IN VARCHAR2,
+				
+				resultado IN OUT registro_pedidoREF
+				)AS
+	  BEGIN
+		OPEN resultado FOR SELECT * FROM registro_pedido WHERE cedula_o_RUC = rp_cedula_o_RUC AND usuario=rp_usuario AND id_pedido=rp_id_pedido;
+	END buscar;
+	
+		
+	PROCEDURE eliminar(
+				rp_id_pedido IN VARCHAR2,
+				rp_cedula_o_RUC IN  VARCHAR2,
+				rp_usuario IN VARCHAR2
+				
+				
+				)AS
+	  BEGIN
+		DELETE FROM registro_pedido
+		WHERE  id_pedido=rp_id_pedido ;
+	END eliminar;
+
+	PROCEDURE mostrar(
+				resultado IN OUT empleadoREF
+				)AS
+	  BEGIN
+		OPEN resultado FOR select c.nombre , COUNT(r.cedula_o_ruc) as np
+				from cliente c , registro_pedido r 
+				where c.cedula_o_ruc = r.cedula_o_ruc 
+				GROUP BY  c.nombre ;
+	END mostrar;
+	
+
+END pack_registro_pedido;

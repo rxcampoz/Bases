@@ -1,0 +1,39 @@
+CREATE OR REPLACE PACKAGE pack_empleado AS TYPE empleadoREF IS REF CURSOR;
+	
+	PROCEDURE ingresar_sistema(
+				u_usuario IN VARCHAR2,
+				u_password IN VARCHAR2,
+	
+				resultado IN OUT empleadoREF
+				);
+	PROCEDURE buscar(
+				u_usuario IN VARCHAR2,
+				resultado IN OUT empleadoREF
+				);
+	
+	
+END pack_empleado;
+
+CREATE OR REPLACE PACKAGE BODY pack_empleado AS
+	
+
+	PROCEDURE ingresar_sistema(
+				u_usuario IN VARCHAR2,
+				u_password IN VARCHAR2,
+				resultado IN OUT empleadoREF
+				)AS
+	  BEGIN
+		OPEN resultado FOR SELECT * FROM empleado  WHERE usuario = u_usuario AND password = u_password;
+	END ingresar_sistema;
+	
+	PROCEDURE buscar(
+				u_usuario IN VARCHAR2,
+				resultado IN OUT empleadoREF
+				)AS
+		BEGIN
+		OPEN resultado FOR SELECT * FROM empleado WHERE usuario = u_usuario ;
+	END buscar ;
+	
+
+	
+END pack_empleado;

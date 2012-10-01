@@ -1,0 +1,94 @@
+CREATE OR REPLACE PACKAGE pack_material AS TYPE materialREF IS REF CURSOR;
+	PROCEDURE ingreso(
+						 
+		       c_id_material IN VARCHAR2,
+                       c_descripcion IN VARCHAR2,
+                       c_nombre IN VARCHAR2,
+                       c_costo IN FLOAT,
+                       c_cantidad IN VARCHAR2,
+                       c_tipo IN VARCHAR2
+					   );
+					   
+   PROCEDURE buscar(
+				
+				c_id_material IN VARCHAR2,
+				resultado IN OUT materialREF
+				);
+				
+	PROCEDURE modificar(
+						 
+		       c_id_material IN VARCHAR2,
+                       c_descripcion IN VARCHAR2,
+                       c_nombre IN VARCHAR2,
+                       c_costo IN FLOAT,
+                       c_cantidad IN VARCHAR2,
+                       c_tipo IN VARCHAR2
+					   
+				);
+	PROCEDURE mostrar(
+				resultado IN OUT materialREF
+				);
+				
+	PROCEDURE eliminar(
+				c_id_material IN VARCHAR2
+				);
+	
+END pack_material;
+
+--------------------------------------------------------------
+CREATE OR REPLACE PACKAGE BODY pack_material AS
+	PROCEDURE ingreso(
+						
+		       c_id_material IN VARCHAR2,
+                       c_descripcion IN VARCHAR2,
+                       c_nombre IN VARCHAR2,
+                       c_costo IN FLOAT,
+                       c_cantidad IN VARCHAR2,
+                       c_tipo IN VARCHAR2			
+                     	)AS
+	  BEGIN
+		INSERT INTO material( id_material , descripcion ,nombre ,costo ,cantidad ,tipo )
+		VALUES(c_id_material , c_descripcion ,c_nombre , c_costo,c_cantidad ,c_tipo );
+	END ingreso;
+	
+	PROCEDURE buscar(
+				
+				c_id_material IN VARCHAR2,
+				resultado IN OUT materialREF
+				)AS
+	  BEGIN
+		OPEN resultado FOR SELECT * FROM material WHERE id_material = c_id_material;
+	END buscar;
+
+	PROCEDURE modificar(
+						
+		       c_id_material IN VARCHAR2,
+                       c_descripcion IN VARCHAR2,
+                       c_nombre IN VARCHAR2,
+                       c_costo IN FLOAT,
+                       c_cantidad IN VARCHAR2,
+                       c_tipo IN VARCHAR2					   
+				)AS
+	  BEGIN
+	UPDATE material SET id_material = c_id_material , descripcion = c_descripcion , nombre = c_nombre,costo = c_costo, cantidad = c_cantidad, tipo = c_tipo
+		WHERE id_material = c_id_material ;
+		COMMIT;
+	END modificar;
+	
+	PROCEDURE mostrar(
+				resultado IN OUT materialREF
+				)AS
+	  BEGIN
+		OPEN resultado FOR SELECT * FROM material;
+	END mostrar;
+	
+	PROCEDURE eliminar(
+				c_id_material IN VARCHAR2
+				)AS
+	  BEGIN
+		DELETE FROM material
+		WHERE id_material = c_id_material;
+	END eliminar;
+	
+
+END pack_material;

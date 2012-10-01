@@ -1,0 +1,14 @@
+INSERT INTO  empleado VALUES ('rdmacias','rdmacias','Robinson','Macias','0923923908','Isla trinitaria','091512301','Administracion','ADMINISTRADOR');
+INSERT INTO  empleado VALUES ('jimayorg','jimayorg','Isrrael','Mayorga','0923124308','DuranCity','091533801','Impreciones','EMPLEADO');
+INSERT INTO  empleado VALUES ('vbernal','vbernal','Vicente','Bernal','0923124308','City','0915331','Imprecis','EMPLEADO');
+
+INSERT INTO  cliente VALUES ('PAREDESPAREDES','vbernal','Angel','Paredes','0923923908','042346578');
+INSERT INTO  cliente VALUES ('SUPRIMT','jimayorg','Raul','Aguilar','0923923908','042776578');
+INSERT INTO  cliente VALUES ('comercialHM','jimayorg','Helen','Martinez','0923923908','042346534');
+
+
+
+
+
+
+

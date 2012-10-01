@@ -1,0 +1,4 @@
+select c.cedula_o_ruc , COUNT(r.cedula_o_ruc) as numero_de_pedidos
+from cliente c , registro_pedido r 
+where c.cedula_o_ruc = r.cedula_o_ruc 
+GROUP BY  c.cedula_o_ruc ;

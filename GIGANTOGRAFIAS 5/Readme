@@ -1,0 +1,5 @@
+Primero debemos ingresar datos del archivo datos en la carpeta SQL_gigan
+Luego ingresar tipos 
+Insert into tipo_pedido values('9999','nombre',500,'descripcion')
+tablas actuales en la carpeta sql si se produce error reemplace la tabla con la correspondiente en la carpeta SQL_gigan  
+
